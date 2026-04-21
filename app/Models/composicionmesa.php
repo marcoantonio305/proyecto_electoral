@@ -1,0 +1,25 @@
+<?php
+$fillable = [
+    'Código',
+    'Descripción',
+    'Dist.',
+    'Sec.',
+    'Mesa',
+    'Cargo',
+    'Nombre',
+    'Apellido 1',
+    'Apellido 2',
+    'Orden',
+    'Documento',
+    'Dirección',
+    'E. Colectiva',
+    'E. Singular',
+    'Núcleo',
+    'Colegio Electoral',
+    'Dirección Colegio Electoral',
+    'Dirección Padrón',
+    'E. Colectiva Padrón',
+    'Núcleo Padrón',
+    'Código Postal',
+    'Número Elector'
+];

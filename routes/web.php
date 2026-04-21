@@ -6,4 +6,5 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/formulario', [App\Http\Controllers\Controller::class, 'formulario']);
+Route::get('/formulario', [App\Http\Controllers\MesaController::class, 'formulario']);
+Route::post('/formulario/enviar', [App\Http\Controllers\MesaController::class, 'enviarDocumento']);

@@ -19,8 +19,7 @@ class MesaController extends Controller // Clase normal, NO abstracta
         $persona = ComposicionMesa::where('Documento', $request->input('documento'))->first();
 
     return view('formulario', [
-        'persona' => $persona,
-        'buscado' => true
+        'persona' => $persona
     ]);
     }
 }

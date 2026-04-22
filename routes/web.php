@@ -1,10 +1,10 @@
 <?php
 
+use App\Http\Controllers\MesaController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [MesaController::class, 'formulario']);
 
-Route::get('/formulario', [App\Http\Controllers\MesaController::class, 'formulario']);
-Route::post('/formulario/enviar', [App\Http\Controllers\MesaController::class, 'enviarDocumento']);
+Route::get('/formulario', [MesaController::class, 'formulario']);
+Route::post('/formulario/enviar', [MesaController::class, 'enviarDocumento']);
+Route::post('/formulario/importar', [MesaController::class, 'importarExcel']);

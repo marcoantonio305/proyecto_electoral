@@ -2,24 +2,44 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ComposicionMesa; // Importación correcta
+use App\Imports\ComposicionMesaImport;
+use App\Models\ComposicionMesa;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
-class MesaController extends Controller // Clase normal, NO abstracta
+class MesaController extends Controller
 {
-    public function formulario()
+    public function formulario(Request $request)
     {
         $mesas = ComposicionMesa::all();
 
-        return view('formulario', compact('mesas'));
+        $persona = ComposicionMesa::first();
+
+        return view('formulario', compact('mesas', 'persona'));
     }
 
     public function enviarDocumento(Request $request)
     {
-        $persona = ComposicionMesa::where('Documento', $request->input('documento'))->first();
+        $persona = ComposicionMesa::where('documento', $request->input('documento'))->first();
 
-    return view('formulario', [
-        'persona' => $persona
-    ]);
+    if ($persona) {
+        return response()->json([
+            'success' => true,
+            'datos'   => $persona
+        ]);
+    }
+
+    return response()->json(['success' => false, 'message' => 'No encontrado'], 404);
+    }
+
+    public function importarExcel(Request $request)
+    {
+        $request->validate([
+            'archivo_excel' => 'required|mimes:xlsx,xls,csv'
+        ]);
+
+        Excel::import(new ComposicionMesaImport, $request->file('archivo_excel'));
+
+        return response()->json(['success' => true]);
     }
 }

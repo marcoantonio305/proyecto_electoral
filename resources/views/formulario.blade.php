@@ -88,25 +88,38 @@
             });
 
             miExcelForm.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                const formData = new FormData(miExcelForm);
+    e.preventDefault();
 
-                try {
-                    const response = await fetch("/formulario/importar", {
-                        method: 'POST',
-                        headers: {
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                        },
-                        body: formData
-                    });
+    const input = document.getElementById('archivo_excel');
+    if (!input.files[0]) return alert('Selecciona un archivo');
 
-                    const res = await response.json();
-                    alert(res.success ? 'Éxito: ' + res.message : 'Error: ' + res.message);
-                    if(res.success) location.reload();
-                } catch (err) {
-                    alert('Error crítico en la subida.');
-                }
-            });
+    const formData = new FormData(miExcelForm);
+
+    try {
+        const response = await fetch("/formulario/importar", {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'Accept': 'application/json'
+            },
+            body: formData
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            alert('Error del servidor: ' + (errorData.message || 'Error desconocido'));
+            return;
+        }
+
+        const res = await response.json();
+        alert('Éxito: ' + res.message);
+        location.reload();
+
+    } catch (err) {
+        console.error(err);
+        alert('Error de conexión o de formato. Revisa la consola (F12) -> Network');
+    }
+});
         });
     </script>
 </body>

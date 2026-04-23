@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Imports\ComposicionMesaImport;
 use App\Models\ComposicionMesa;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 
 class MesaController extends Controller
@@ -33,13 +34,22 @@ class MesaController extends Controller
     }
 
     public function importarExcel(Request $request)
-    {
-        $request->validate([
-            'archivo_excel' => 'required|mimes:xlsx,xls,csv'
-        ]);
+{
+    try {
+        if (!$request->hasFile('archivo_excel')) {
+            return response()->json(['success' => false, 'message' => 'No se seleccionó ningún archivo'], 400);
+        }
+        DB::transaction(function () use ($request) {
+            ComposicionMesa::truncate();
+            Excel::import(new ComposicionMesaImport, $request->file('archivo_excel'));
+        });
 
-        Excel::import(new ComposicionMesaImport, $request->file('archivo_excel'));
+        return response()->json(['success' => true, 'message' => 'Importado con éxito']);
 
-        return response()->json(['success' => true]);
+    } catch (\Exception $e) {
+        return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
     }
+}
+
+
 }

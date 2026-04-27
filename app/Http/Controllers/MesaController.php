@@ -6,6 +6,7 @@ use App\Imports\ComposicionMesaImport;
 use App\Models\ComposicionMesa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 
 class MesaController extends Controller
@@ -14,9 +15,9 @@ class MesaController extends Controller
     {
         $mesas = ComposicionMesa::all();
 
-        $persona = ComposicionMesa::first();
+        $titulo = Storage::exists('titulo.txt') ? Storage::get('titulo.txt') : 'Buscador de mesas';
 
-        return view('formulario', compact('mesas', 'persona'));
+        return view('formulario', compact('mesas', 'titulo'));
     }
 
     public function enviarDocumento(Request $request)
@@ -51,5 +52,13 @@ class MesaController extends Controller
     }
 }
 
+    public function guardarTitulo(Request $request) {
+    $request->validate(['titulo' => 'required|string|max:255']);
+
+    // Guardamos en el archivo persistente
+    Storage::disk('local')->put('titulo.txt', $request->titulo);
+
+    return response()->json(['success' => true]);
+}
 
 }

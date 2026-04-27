@@ -12,7 +12,12 @@
 </header>
 <body class="bg-gray-100">
     <div class="flex flex-col items-center">
-        <h1 class="text-2xl font-bold mb-10 mt-10">{{ $persona->descripcion ?? 'Buscador de Mesa' }}</h1>
+        <div class="flex flex-row">
+        <h1 class="text-2xl font-bold mb-10 mt-10">{{ $titulo }}</h1>
+        <form id="formTitulo">
+                <button type="submit" class="bg-yellow-600 text-white py-2 px-4 rounded ml-10 mt-9" >Editar</button>
+            </form>
+            </div>
 
         <form id="formBusqueda" class="mb-10">
             @csrf
@@ -27,9 +32,13 @@
                 <input type="file" id="archivo_excel" name="archivo_excel" accept=".xlsx,.xls,.csv" class="ml-2">
                 <button type="submit" class="bg-green-600 text-white py-2 px-4 rounded ml-2">Subir</button>
             </form>
+
         </div>
 
+
+
         <div id="contenedor-dinamico" class="hidden"></div>
+        <div id="contenedor-dinamico2" class="hidden"></div>
     </div>
 
     <script>
@@ -66,8 +75,7 @@
                             ['Cargo', res.datos.cargo_nombre],
                             ['Colegio', res.datos.colegio_electoral],
                             ['Dirección', res.datos.direccion],
-                            ['Mesa', res.datos.mesa],
-                            ['Descripción', res.datos.descripcion]
+                            ['Mesa', `0${res.datos.dist}${(res.datos.sec.length === 3 ? res.datos.sec : '0' + res.datos.sec)}${res.datos.mesa}`],
                         ];
 
                         fields.forEach(field => {
@@ -121,6 +129,43 @@
     }
 });
         });
+        const tituloH1 = document.getElementById('titulo-elecciones');
+        const formTitulo = document.getElementById('formTitulo');
+
+formTitulo.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const nuevoTexto = prompt("Introduce un nuevo título para la página:", "ELECCIONES AL PARLAMENTO...");
+
+    if (!nuevoTexto) return;
+
+    try {
+        const response = await fetch("/guardar-titulo", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({ titulo: nuevoTexto })
+        });
+
+        if (response.ok) {
+            alert("Título actualizado para todos los usuarios.");
+            location.reload();
+        } else {
+            alert("Error al guardar en el servidor.");
+        }
+    } catch (err) {
+        console.error("Error de conexión:", err);
+        alert("No se pudo conectar con el servidor.");
+    }
+});
+
+formTitulo.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+        e.preventDefault();
+        tituloH1.innerText = inputTitulo.value;
+    }
+});
     </script>
 </body>
 </html>

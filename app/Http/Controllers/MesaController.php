@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Auth;
 
 class MesaController extends Controller
 {
@@ -36,6 +37,12 @@ class MesaController extends Controller
 
     public function importarExcel(Request $request)
 {
+    $user = Auth::user();
+
+        if (!$user || $user->name !== 'admin') {
+        return response()->json(['message' => 'No tienes permisos. Solo el usuario admin puede hacer esto.'], 403);
+    }
+
     try {
         if (!$request->hasFile('archivo_excel')) {
             return response()->json(['success' => false, 'message' => 'No se seleccionó ningún archivo'], 400);
@@ -55,7 +62,6 @@ class MesaController extends Controller
     public function guardarTitulo(Request $request) {
     $request->validate(['titulo' => 'required|string|max:255']);
 
-    // Guardamos en el archivo persistente
     Storage::disk('local')->put('titulo.txt', $request->titulo);
 
     return response()->json(['success' => true]);

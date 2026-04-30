@@ -15,11 +15,7 @@
     <div class="flex flex-col items-center">
         <div class="flex flex-row">
         <h1 class="text-2xl font-bold mb-10 mt-10">{{ $titulo }}</h1>
-        {{--}@if(auth()->check() && auth()->user()->name === 'admin')
-        <form id="formTitulo">
-                <button type="submit" class="bg-yellow-600 text-white py-2 px-4 rounded ml-10 mt-9" >Editar</button>
-            </form>
-            @endif--}}
+
             </div>
 
         <form id="formBusqueda" class="mb-10">
@@ -27,19 +23,7 @@
             <input class="rounded border border-gray-300 p-2 mr-5" type="text" id="dni_input" placeholder="Introduce DNI" required>
             <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded">Consultar</button>
         </form>
-{{-- @if(auth()->check() && auth()->user()->name === 'admin')
-        <div class="bg-white p-5 rounded border border-gray-300 mb-10">
 
-            <form id="formImportar" enctype="multipart/form-data">
-                @csrf
-                <label for="archivo_excel" class="font-bold">Importar Excel:</label>
-                <input type="file" id="archivo_excel" name="archivo_excel" accept=".xlsx,.xls,.csv" class="ml-2">
-                <button type="submit" class="bg-green-600 text-white py-2 px-4 rounded ml-2">Subir</button>
-            </form>
-
-
-        </div>
-@endif--}}
 
 
         <div id="contenedor-dinamico" class="hidden"></div>
@@ -100,57 +84,7 @@
         });
     }
 
-    const miExcelForm = document.getElementById('formImportar');
-    if (miExcelForm) {
-        miExcelForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const input = document.getElementById('archivo_excel');
-            if (!input.files[0]) return alert('Selecciona un archivo');
 
-            const formData = new FormData(miExcelForm);
-            try {
-                const response = await fetch("/formulario/importar", {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                        'Accept': 'application/json'
-                    },
-                    body: formData
-                });
-                const res = await response.json();
-                alert(res.message);
-                if (response.ok) location.reload();
-            } catch (err) {
-                alert('Error al importar el archivo.');
-            }
-        });
-    }
-
-    const formTitulo = document.getElementById('formTitulo');
-    if (formTitulo) {
-        formTitulo.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const nuevoTexto = prompt("Introduce un nuevo título:", "ELECCIONES...");
-            if (!nuevoTexto) return;
-
-            try {
-                const response = await fetch("/guardar-titulo", {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    body: JSON.stringify({ titulo: nuevoTexto })
-                });
-                if (response.ok) {
-                    alert("Título actualizado.");
-                    location.reload();
-                }
-            } catch (err) {
-                alert("Error de conexión.");
-            }
-        });
-    }
 });
     </script>
 </body>

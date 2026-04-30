@@ -38,3 +38,36 @@ class ComposicionMesaImport implements ToModel, WithHeadingRow
         ]);
     }
 }
+
+/**<?php
+
+namespace App\Models;
+
+use App\Models\ComposicionMesa;
+use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
+
+class ComposicionMesaImport implements ToModel, WithHeadingRow
+{
+    public function model(array $row)
+    {
+        return new ComposicionMesa([
+            'codigo'            => $row['codigo'] ?? null,
+            'descripcion'       => $row['descripcion'] ?? null,
+            'dist'              => $row['dist'] ?? null,
+            'sec'               => $row['sec'] ?? null,
+            'mesa'              => $row['mesa'] ?? null,
+            'cargo_id'          => $row['cargo_id'] ?? null, // Columna de tu DB
+            'cargo_nombre'      => $row['cargo_nombre'] ?? $row['cargo'] ?? null,
+            'nombre'            => $row['nombre'] ?? null,
+            'apellido_1'        => $row['apellido_1'] ?? null,
+            'apellido_2'        => $row['apellido_2'] ?? null,
+            'orden'             => $row['orden'] ?? null,
+            'documento'         => $row['documento'] ?? null,
+            'direccion'         => $row['direccion'] ?? null,
+            'colegio_electoral' => $row['colegio_electoral'] ?? null,
+            'direccion_colegio' => $row['direccion_colegio'] ?? null,
+            'numero_elector'    => $row['numero_elector'] ?? null,
+        ]);
+    }
+}*/

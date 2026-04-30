@@ -37,8 +37,27 @@
 
 
 
-        <div id="contenedor-dinamico" class="hidden"></div>
-        <div id="contenedor-dinamico2" class="hidden"></div>
+        <div id="contenedor-dinamico" class="hidden mb-5"></div>
+        <div id="contenedor-dinamico2" class="hidden mb-5"></div>
+        <div class="bg-white text-black border border-black rounded w-250 p-5 font-bold justify-center mt-5">
+            <p>Aviso Importante: Carácter Provisional de la Designación</p>
+            <br>
+
+<p>El resultado de esta consulta es de carácter informativo y no es definitivo.</p>
+<br>
+
+<p>Conforme a la normativa electoral, las personas designadas como miembros de una mesa electoral disponen de un plazo legal para presentar, si procede, causas justificadas y documentadas que les impidan aceptar el cargo. Estas alegaciones deben ser resueltas por la Junta Electoral de Zona correspondiente.</p>
+<br>
+
+<p>Por tanto, la composición final de las mesas electorales puede cambiar a medida que se admitan dichas excusas y se notifique a los suplentes. La designación solo se considerará definitiva una vez concluido este proceso.</p>
+<br>
+
+<p>Este procedimiento se regula en el Artículo veintisiete de la Ley Orgánica del Régimen Electoral General.</p>
+        </div>
+        <form action="{{ route('logout') }}" method="POST">
+    @csrf
+    <button type="submit" class="bg-red-600 text-white py-2 px-4 rounded ml-2 mt-5 mb-5">Cerrar Sesión</button>
+</form>
     </div>
 
     <script>

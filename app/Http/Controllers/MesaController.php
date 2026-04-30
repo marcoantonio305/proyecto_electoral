@@ -10,16 +10,21 @@ use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Auth;
 
+
 class MesaController extends Controller
 {
     public function formulario(Request $request)
-    {
-        $mesas = ComposicionMesa::all();
+{
+    $titulo = Storage::disk('local')->exists('titulo.txt')
+        ? Storage::disk('local')->get('titulo.txt')
+        : 'Buscador de mesas';
 
-        $titulo = Storage::exists('titulo.txt') ? Storage::get('titulo.txt') : 'Buscador de mesas';
-
-        return view('formulario', compact('mesas', 'titulo'));
+    if (Auth::check()) {
+        return view('editar', compact('titulo'));
     }
+
+    return view('formulario', compact('titulo'));
+}
 
     public function enviarDocumento(Request $request)
     {

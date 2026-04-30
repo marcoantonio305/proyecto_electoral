@@ -1,5 +1,5 @@
 <?php
-namespace App\Imports;
+namespace App\Models;
 
 use App\Models\ComposicionMesa as ComposicionMesaModel; // Usamos un alias
 use Maatwebsite\Excel\Concerns\ToModel;

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Imports\ComposicionMesaImport;
+use App\Models\ComposicionMesaImport;
 use App\Models\ComposicionMesa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -37,11 +37,6 @@ class MesaController extends Controller
 
     public function importarExcel(Request $request)
 {
-    $user = Auth::user();
-
-        if (!$user || $user->name !== 'admin') {
-        return response()->json(['message' => 'No tienes permisos. Solo el usuario admin puede hacer esto.'], 403);
-    }
 
     try {
         if (!$request->hasFile('archivo_excel')) {
@@ -49,7 +44,7 @@ class MesaController extends Controller
         }
         DB::transaction(function () use ($request) {
             ComposicionMesa::truncate();
-            Excel::import(new ComposicionMesaImport, $request->file('archivo_excel'));
+            Excel::import(new \App\Models\ComposicionMesaImport, $request->file('archivo_excel'));
         });
 
         return response()->json(['success' => true, 'message' => 'Importado con éxito']);
@@ -67,4 +62,10 @@ class MesaController extends Controller
     return response()->json(['success' => true]);
 }
 
+public function editar(Request $request)
+    {
+        $mesas = ComposicionMesa::all();
+        $titulo = Storage::exists('titulo.txt') ? Storage::get('titulo.txt') : 'Buscador de mesas';
+        return view('edit', compact('mesas', 'titulo'));
+    }
 }

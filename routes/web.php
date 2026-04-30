@@ -6,12 +6,12 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [MesaController::class, 'formulario']);
 
 Route::get('/formulario', [MesaController::class, 'formulario']);
+Route::get('/formulario/editar', [MesaController::class, 'editar']);
 Route::post('/formulario/enviar', [MesaController::class, 'enviarDocumento']);
 Route::post('/formulario/importar', [MesaController::class, 'importarExcel']);
 Route::post('/guardar-titulo', [MesaController::class, 'guardarTitulo']);
 
-Route::post('/formulario/importar', [MesaController::class, 'importarExcel'])
-    ->middleware('auth');
+Route::post('/formulario/importar', [MesaController::class, 'importarExcel']);
 
-Route::post('/guardar-titulo', [MesaController::class, 'guardarTitulo'])
-    ->middleware('auth');
+
+Route::post('/guardar-titulo', [MesaController::class, 'guardarTitulo']);
